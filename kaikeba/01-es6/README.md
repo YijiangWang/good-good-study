@@ -127,7 +127,8 @@ console.log(`文件在 document 文件夹下: ${path.startsWith('document')};
 
 #### 四.类和继承
 - 类;
-- 继承.
+- 继承;
+- 可以拥有内部类,但是可以忽略.
 ```js
 // 1.类
 class Person{
@@ -147,6 +148,8 @@ p.show();
 // 我是:yijiang,我今年:16
 
 // 2.继承
+// 2.1.super 会把父类的属性继承过来
+// 2.2.extends 会把父类的方法继承过来
 class Student extends Person{
   constructor(name, age, job){
     super(name, age); // 实现父类的构造方法
@@ -161,3 +164,64 @@ const stu = new Student('yijiang',18,'student');
 stu.show();
 // 我是: yijiang,我今年:18,我的职业是:student
 ```
+- bind: 给函数定死一个this,用法 func.bind('aaa');
+```js
+function show(){
+  console.log(this);
+};
+document.onclick = show.bind(12)  // 点击会打印12
+```
+- 普通函数:this根据调用我的人;
+```js
+// 普通函数中的this
+document.onclick = function(){
+  console.log(this)// document 对象
+}
+window.setTimeout(function(){
+  console.log(this) // window对象
+}, 5000);
+
+let arr = [8,9,11];
+arr.a = function(){
+  console.log(this);  // [8,9,11]
+};
+arr.a();
+```
+- 箭头函数:this根据所在的环境.
+```js
+// 箭头函数中的this,指向恒定
+document.onclick = () => {
+  console.log(this);  // 打印 window 对象
+};
+window.setTimeout(() => {
+  console.log(this);  // 打印 window 对象
+}, 5000);
+let arrowArr = [1,2,3];
+arrowArr.a = () => {
+  console.log(this);  // window 对象
+}
+arrowArr.a();
+
+document.onclick = function(){
+  let arr = [3,4,5];
+  arr.a = () => {
+    console.log(this) // 打印 document 对象
+  }
+  arr.a();
+}
+```
+- 箭头函数的优先级比 bind 高:即给箭头函数使用 bind,箭头函数中的 this 并不是 bind 的对象,而是箭头函数所在的环境(作用域).
+
+#### 五.Promise
+- Promise有点:解除异步操作;
+- Promise局限:待逻辑的异步操作很麻烦,如下情况:
+```js
+if(异步操作1){
+  异步操作2
+}else{
+  异步操作3
+}
+```
+
+#### 六.generator--生成器
+- 能暂停;
