@@ -6,7 +6,7 @@ function* gen (){
   let a = yield;  // 到达这句是只会执行到 yield,不会执行赋值语句
   console.log('bbb'+a);
   yield 55;
-  return 90;
+  return 90;  // 如果没有return,最后一次打印一般是 {value: undefined, done: true}
 }
 const g = gen();
 g.next(); // aaa
@@ -18,4 +18,4 @@ console.log(g.next());  // { value: 90, done: true }
 // 1.需要外来的runner辅助执行--不统一/不标准/性能低
 // 2.generator函数不能写成箭头函数
 
---- 看到 p6 32min 处 ---
+// --- 看到 p6 32min 处 ---

@@ -213,8 +213,8 @@ document.onclick = function(){
 - 箭头函数的优先级比 bind 高:即给箭头函数使用 bind,箭头函数中的 this 并不是 bind 的对象,而是箭头函数所在的环境(作用域).
 
 #### 五.Promise
-- Promise有点:解除异步操作;
-- Promise局限:待逻辑的异步操作很麻烦,如下情况:
+- Promise优点:解除异步操作;
+- Promise局限:带逻辑的异步操作很麻烦,如下情况:
 ```js
 if(异步操作1){
   异步操作2
@@ -222,6 +222,82 @@ if(异步操作1){
   异步操作3
 }
 ```
+- promise.all([p1,p2,p3]).then(res=>{}) // 等待所有的p1/p2/p3都fulfilled之后外层的p才进入fulfilled状态;只要p1/p2/p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数;
+- promise.race([p1,p2,p3]) // 只要p1/p2/p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的Promise实例的返回值，就传递给p的回调函数.
 
-#### 六.generator--生成器
-- 能暂停;
+#### 六.generator--生成器(不能使用箭头函数)
+- 能暂停;需要通过调用g.next()继续往下执行;
+- 能传值,g.next(12),注意只会执行到yield及其右边的部分,左边的不会执行,比如赋值,如下代码示例;
+- 能接受值,`yield aaa`会将aaa赋值给next的接收值,见如下代码;
+- 最后返回一般使用return.
+  ```js
+  function* gen (){
+    console.log('aaa');
+    let a = yield;  // 到达这句是只会执行到 yield,不会执行赋值语句
+    console.log('bbb'+a);
+    yield 55;
+    return 90;  // 如果没有return,最后一次打印一般是 {value: undefined, done: true}
+  }
+  const g = gen();
+  g.next(); // aaa
+  const res1 = g.next(' yijiang'); // bbb yijiang,这里往里面传值
+  console.log(res1);  //{ value: 55, done: false },这里是接受返回值
+  console.log(g.next());  // { value: 90, done: true }
+  ```
+
+#### async-await
+- 不再需要手动去操作,当await后面是异步操作时,会自动暂停,知道该异步操作结束再继续向下执行;
+- 完全像写同步一样来操纵异步;
+- 形式如下,和generator差不多
+  ```js
+  async function func(){
+    ...
+    await ... // 这里一般是异步操作,如果不是异步操作就当同步操作处理
+    ...
+  };
+  ```
+- async/await 一般和promise和generator配合使用,也可以是另一个async;
+- 定时器不被认为是异步操作;
+- 可以方便的将异步操作放到逻辑操作里面(解决了promise的短板).
+  ```js
+  async function show1(){
+    console.log('yjw---1');
+    await console.log('yjw---2');
+    console.log('yjw---3');
+  };
+  show1();
+  // yjw---1
+  // yjw---2
+  // yjw---3
+  ```
+  ```js
+  // async/await 一般和promise和generator配合使用,也可以是另一个async
+  // 定时器不被认为是异步操作
+  async function show2(){
+    console.log('yjw---21');
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(1111);
+        console.log('yjw---22');
+      }, 5000);
+    });
+    console.log('yjw---23')
+  }
+  show2();
+  // yjw---21
+  // 5s之后输出:yjw---22
+  // yjw---23
+  ```
+- 如果异步请求错误,会停留在报错的地方,错误处理方法如下:
+  ```js
+  async function func(){
+    try{
+      ...
+      await ...
+      ...
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  func();
+  ```
