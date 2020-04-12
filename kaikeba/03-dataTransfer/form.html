@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form action="http://localhost/a.php" method="POST" id="yjwForm">
+    用户名: <input type="text" name='user'><br>
+    密码: <input type="password" name="pass"><br>
+    <input type="submit" value="提交">
+  </form>
+</body>
+<script>
+  window.onload = () => {
+    const $ = document.querySelectorAll.bind(document);
+    const yjwForm = $('#yjwForm')[0];
+    
+    // 获取用户名和密码
+    const user = document.getElementsByName('user')[0];
+    const pass = document.getElementsByName('pass')[0];
+
+    // form表单有一个提交事件,在提交时进行空或者其它校验
+    yjwForm.onsubmit = () => {
+      if(user.value=='' || pass.value==''){
+        alert('用户名或者密码不能为空');
+        return false; // 防止默认事件
+      }
+    }
+  }
+</script>
+</html>
