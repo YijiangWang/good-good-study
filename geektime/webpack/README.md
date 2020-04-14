@@ -76,3 +76,28 @@ module.exports = {
   |HtmlWebpackPlugin|创建html文件去承载输出的bundle|
   |UglifyjsWebpackPlugin|压缩js|
   |ZipWebpackPlugin|将打包出的资源生成一个zip包|
+- plugins用法：
+  ```js
+  const path = require('path');
+
+  console.log('yjw---> ', path.resolve(__dirname, 'dist'))
+  module.exports = {
+    entry: {
+      app: './path/myEntry/app.js',
+      login: './path/myEntry/login.js'
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js'
+    },
+    mode: 'production',
+    module: {
+      rules: [
+        {test: /\.txt$/, use: 'raw-loader'}
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({template: './src/index.html'})
+    ]
+  }
+  ```
