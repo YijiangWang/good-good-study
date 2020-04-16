@@ -101,3 +101,71 @@ module.exports = {
     ]
   }
   ```
+###### 2.4.mode
+- mode是webpack4提出来的一个新概念，用来指定当前的构建环境：production、development和none；
+- 设置mode可以使用webpack内置的函数，默认值为production。
+- mode的内置函数功能：
+  |选项|描述|
+  |:-:|:-:|
+  |development|设置process.env.NODE_ENV的值为development，webpack默认开启`NamedChunksPlugin`和`NamedModulesPlugin`。|
+  |production|设置process.env.NODE_ENV的值为production，webpack默认开启`FlagDependencyUsagePlugin`、`FlagIncludedChunksPlugin`、`ModuleConcatenationPlugin`、`NoEmitOnErrorsPlugin`、`OccurrenceOrderPlugin`、`SideEffectsFlagPlugin`和`TerserPlugin`|
+  |none|不开启任何优化选项|
+- mode使用：
+  ```js
+  const path = require('path');
+  module.exports = {
+    entry: {
+      app: './src/myEntry/app.js',
+      login: './src/myEntry/login.js'
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js'
+    },
+    mode: 'development',
+    module: {
+      rules: [
+        {test: /\.txt$/, use: 'raw-loader'}
+      ]
+    },
+    plugins: [
+      new HtmlWebpackPlugin({template: './src/index.html'})
+    ]
+  };
+  ```
+
+###### 2.5.解析es6和React
+- webpack.config.js中的内容：
+  ```js
+  const path = require('path');
+  module.exports = {
+    entry: {
+      es6: './src/es6.js',
+      react: './src/react.js'
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name].js'
+    },
+    mode: "development",
+    module: {
+      rules: [
+        {
+          test: /\.js$/, 
+          use: "babel-loader",
+          exclude: /node_modules/
+        }
+      ]
+    }
+  }
+  ```
+  - 如果把上面的 `test: /\.js$/` 写成 `test: "/\.js$/"`，则会报如下的错：*Module parse failed: Unexpected token XXX. You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file.*
+- 这里用到了 *babel-loader*，需要进行安装 *babel-loader、@babel/core、@babel/preset-env、@babel/preset-react*，创建`.bablerc`或者`babel.config.js`文件，内容如下：
+  ```js
+  {
+    "presets": [
+      "@babel/preset-env",  // 编译es6
+      "@babel/preset-react" // 编译react
+    ]
+  }
+  ```
