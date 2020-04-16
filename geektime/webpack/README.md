@@ -174,3 +174,46 @@ module.exports = {
   <div id="root"></div>
   <script src="./react.js"></script>
   ```
+
+###### 2.6.解析css、less和sass
+- css-loader：用于加载 *.css* 文件，并且转换成 *commonjs* 对象；
+- style-loader：将样式通过 *style* 标签插入到 *head* 中。
+- 安装 *webpack、webpack-cli、react react-dom、babel-loader、style-loader、css-loader，@babel/core、@babel/preset-env、@babel/preset-react*;
+- webpack.config.js 文件内容如下：
+  ```js
+  const path = require('path');
+
+  module.exports = {
+    entry: {
+      app: "./src/app.js"
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: "[name].js"
+    },
+    mode: "development",
+    module: {
+      rules: [
+        {test: /\.js$/, use: "babel-loader"},
+        {test: /\.css$/, use: ["style-loader", "css-loader"]}
+      ]
+    }
+  }
+  ```
+  - 注：*["style-loader", "css-loader"]* 这里的顺序是从右往左执行的，先解析css，然后再讲css添加到style中，所以顺序不要颠倒。
+- babel.config.js 文件内容：
+  ```js
+  module.exports = {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  }
+  ```
+- 解析 less：
+  - 在 *rules* 中添加配置：
+    ```js
+    {test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"]}
+    ```
+    - 注：同理，上面三个 *loader*  的顺序不能颠倒。
+  - 安装 *less、less-loader*。
