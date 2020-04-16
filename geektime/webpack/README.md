@@ -169,3 +169,8 @@ module.exports = {
     ]
   }
   ```
+- 注意，在dist中创建一个html文件，然后引入编译之后的es6和react的代码，下面两行代码的顺序一定不能颠倒，否则会报错：*Uncaught Error: Target container is not a DOM element.*
+  ```html
+  <div id="root"></div>
+  <script src="./react.js"></script>
+  ```
