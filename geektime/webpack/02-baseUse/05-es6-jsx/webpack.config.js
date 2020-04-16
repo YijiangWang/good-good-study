@@ -8,11 +8,11 @@ const path = require('path');
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js'
     },
-    mode: "production",
+    mode: "development",
     module: {
       rules: [
         {
-          test: '/\.js$/', 
+          test: /\.js$/, 
           use: "babel-loader",
           exclude: /node_modules/
         }
