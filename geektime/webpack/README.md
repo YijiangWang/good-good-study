@@ -247,3 +247,31 @@ module.exports = {
   ```
 - 除了 *file-loader*,还可以使用 *url-loader* 来解析图片和字体,*url-loader* 比 *file-loader* 多一个功能,可以通过 *option* 设置将较小的资源自动转换成 base64.
   
+###### 2.8.webpack中的文件监听
+- 文件监听是指发现源码发生变化时,自动重新构建出新的输出文件;
+- webpack 开启监听模式有两种方式:
+  - 启动webpack命令时,带上 *--watch* 参数:
+    ```js
+    "build": "webpack --watch"
+    ```
+  - 在配置 webpack.config.js 中设置 *watch: true*:
+    ```js
+    // @ts-check
+    const path = require('path');
+    module.exports = {
+      entry: {
+        app: './src/app.js'
+      },
+      output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist')
+      },
+      mode: 'development',
+      watch: true,
+      module: {
+        rules: [
+          {test: /\.js$/, use: 'babel-loader'}
+        ]
+      }
+    }
+    ```
