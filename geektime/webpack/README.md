@@ -217,3 +217,33 @@ module.exports = {
     ```
     - 注：同理，上面三个 *loader*  的顺序不能颠倒。
   - 安装 *less、less-loader*。
+
+###### 2.7.资源解析
+- 解析图片 *png/svg/jpg/gif* 和字体 *woff/woff2/eot/ttf/otf*,需要使用 *file-loader*:
+  ```js
+  // @ts-check
+  const path = require('path');
+
+  module.exports = {
+    entry: {
+      app: "./src/app.js"
+    },
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "[name].js"
+    },
+    mode: "production",
+    module: {
+      rules: [
+        {test: /\.js$/, use: "babel-loader"},
+        {test: /\.(jpg|jpeg|gif|png|svg)/i, use: "file-loader"},
+        {test: /\.(woff|woff2|eot|ttf|otf)$/, use: "file-loader"}, // 字体解析
+        {test: /\.(jpg|jpeg|gif|png|svg)/i, use: [
+          {loader: "url-loader", options: {limit: 10240}} // 10k,资源小于10k时,转为base64
+        ]}
+      ]
+    }
+  }
+  ```
+- 除了 *file-loader*,还可以使用 *url-loader* 来解析图片和字体,*url-loader* 比 *file-loader* 多一个功能,可以通过 *option* 设置将较小的资源自动转换成 base64.
+  
