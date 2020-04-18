@@ -169,3 +169,109 @@ module.exports = {
     ]
   }
   ```
+- 注意，在dist中创建一个html文件，然后引入编译之后的es6和react的代码，下面两行代码的顺序一定不能颠倒，否则会报错：*Uncaught Error: Target container is not a DOM element.*
+  ```html
+  <div id="root"></div>
+  <script src="./react.js"></script>
+  ```
+
+###### 2.6.解析css、less和sass
+- css-loader：用于加载 *.css* 文件，并且转换成 *commonjs* 对象；
+- style-loader：将样式通过 *style* 标签插入到 *head* 中。
+- 安装 *webpack、webpack-cli、react react-dom、babel-loader、style-loader、css-loader，@babel/core、@babel/preset-env、@babel/preset-react*;
+- webpack.config.js 文件内容如下：
+  ```js
+  const path = require('path');
+
+  module.exports = {
+    entry: {
+      app: "./src/app.js"
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: "[name].js"
+    },
+    mode: "development",
+    module: {
+      rules: [
+        {test: /\.js$/, use: "babel-loader"},
+        {test: /\.css$/, use: ["style-loader", "css-loader"]}
+      ]
+    }
+  }
+  ```
+  - 注：*["style-loader", "css-loader"]* 这里的顺序是从右往左执行的，先解析css，然后再讲css添加到style中，所以顺序不要颠倒。
+- babel.config.js 文件内容：
+  ```js
+  module.exports = {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  }
+  ```
+- 解析 less：
+  - 在 *rules* 中添加配置：
+    ```js
+    {test: /\.less$/, use: ["style-loader", "css-loader", "less-loader"]}
+    ```
+    - 注：同理，上面三个 *loader*  的顺序不能颠倒。
+  - 安装 *less、less-loader*。
+
+###### 2.7.资源解析
+- 解析图片 *png/svg/jpg/gif* 和字体 *woff/woff2/eot/ttf/otf*,需要使用 *file-loader*:
+  ```js
+  // @ts-check
+  const path = require('path');
+
+  module.exports = {
+    entry: {
+      app: "./src/app.js"
+    },
+    output: {
+      path: path.resolve(__dirname, "dist"),
+      filename: "[name].js"
+    },
+    mode: "production",
+    module: {
+      rules: [
+        {test: /\.js$/, use: "babel-loader"},
+        {test: /\.(jpg|jpeg|gif|png|svg)/i, use: "file-loader"},
+        {test: /\.(woff|woff2|eot|ttf|otf)$/, use: "file-loader"}, // 字体解析
+        {test: /\.(jpg|jpeg|gif|png|svg)/i, use: [
+          {loader: "url-loader", options: {limit: 10240}} // 10k,资源小于10k时,转为base64
+        ]}
+      ]
+    }
+  }
+  ```
+- 除了 *file-loader*,还可以使用 *url-loader* 来解析图片和字体,*url-loader* 比 *file-loader* 多一个功能,可以通过 *option* 设置将较小的资源自动转换成 base64.
+  
+###### 2.8.webpack中的文件监听
+- 文件监听是指发现源码发生变化时,自动重新构建出新的输出文件;
+- webpack 开启监听模式有两种方式:
+  - 启动webpack命令时,带上 *--watch* 参数:
+    ```js
+    "build": "webpack --watch"
+    ```
+  - 在配置 webpack.config.js 中设置 *watch: true*:
+    ```js
+    // @ts-check
+    const path = require('path');
+    module.exports = {
+      entry: {
+        app: './src/app.js'
+      },
+      output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist')
+      },
+      mode: 'development',
+      watch: true,
+      module: {
+        rules: [
+          {test: /\.js$/, use: 'babel-loader'}
+        ]
+      }
+    }
+    ```
