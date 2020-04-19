@@ -275,3 +275,76 @@ module.exports = {
       }
     }
     ```
+- 文件监听原理
+  - 轮询判断文件的最后编辑时间是否发生变化;
+  - 某个文件发生了变化,并不会立刻告诉监听者,而是先缓存起来,等待 aggregateTimeout 时间后再去执行:
+    ```js
+    module.exports = {
+      // 默认是 false,也就是不开启
+      watch: true,
+      // 只有开启监听模式时,watchOptions 才有意义
+      watchOptions: {
+        // 默认为空,不监听的文件或者文件夹,支持正则匹配
+        ignored: /node_modules/,
+        // 监听到文件变化后等 300ms 再去执行,默认 300ms
+        aggregateTimeout: 300,
+        // 判断文件是否发生变化是通过不停轮询系统指定文件有没有变化实现的,默认每秒轮询 1000 次
+        poll: 1000
+      }
+    }
+    ```
+###### 2.9.热更新:webpack-dev-server
+- WDS:
+  - WDS 不刷新浏览器;
+  - WDS 不输出文件,而是放在内存中(速度更快);
+  - 配合 HotModuleReplacementPlugin 插件使用.
+  - 在 package.json 添加一句执行命令语句: *"dev": "webpack-dev-server --open"*, *--open* 是命令执行完之后自动打开浏览器的意思.
+  - webpack.config.js 文件中的内容:
+    ```js
+    const path = require('path');
+    const webpack = require('webpack');
+
+    module.exports = {
+      entry: {
+        app: './src/app.js'
+      },
+      output: {
+        filename: '[name].js',
+        path: path.resolve(__dirname, 'dist')
+      },
+      mode: 'development',
+      module: {
+        rules: [
+          {test: /\.js$/, use: 'babel-loader'}
+        ]
+      },
+      plugins: [
+        new webpack.HotModuleReplacementPlugin()
+      ],
+      devServer: {
+        contentBase: './dist',
+        hot: true,
+        port: 8383  //可以设置端口,默认8080
+      }
+    }
+    ```
+- 热更新: 使用 webpack-dev-middleware
+  - WDM 将 webpack 输出的文件传输给服务器;
+  - 适用于灵活的定制场景;
+  - 以下代码没有实现,感兴趣的你可以尝试:
+    ```js
+    const express = require('express');
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+
+    const app = express();
+    const config = require('./webpack.config.js');
+    const compiler = webpack(config);
+
+    app.use(webpackDevMiddleware(compiler,{pubilcPath: config.output.publicPath}));
+    app.listen(3000,function(){
+      console.log('Example app listening on port 3000\n');
+    })
+    ```
+  - 原理没有补充.
+  
