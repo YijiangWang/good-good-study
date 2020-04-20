@@ -331,7 +331,7 @@ module.exports = {
 - 热更新: 使用 webpack-dev-middleware
   - WDM 将 webpack 输出的文件传输给服务器;
   - 适用于灵活的定制场景;
-  - 以下代码没有实现,感兴趣的你可以尝试:
+  - 以下代码没有验证,感兴趣的你可以尝试:
     ```js
     const express = require('express');
     const webpack = require('webpack');
@@ -346,5 +346,145 @@ module.exports = {
       console.log('Example app listening on port 3000\n');
     })
     ```
-  - 原理没有补充.
-  
+  - 原理稍后补充.
+
+###### 2.10.文件指纹
+- 文件指纹: 打包后输出的文件名的后缀;
+- 通常用于版本管理: 文件修改后,其文件指纹会发生改变,这时浏览器会从服务器重新下载,而不去读缓存中的文件.
+- 文件指纹生成方式:
+  - Hash: 和整个项目的构建相关,只要项目文件有修改,整个项目构建的 hash 值就会改变,一个文件修改,所有页面的hash都会改变;
+  - Chunkhash: 和 webpack 打包的 chunk 有关,不同的 entry 会生成不同的 chunkhash 值,一个entry文件的修改不会影响到其他entry的文件,一般的js文件会使用 Chunkhash;
+  - ContentHash: 根据文件内容来定义 hash,文件内容不变,则 contenthash 不变,一般css文件使用. 
+- js 文件指纹设置,一般只需要设置 output 中的 filename:
+  ```js
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name]_[chunkhash:8].js'
+  },
+  ```
+  - 其中生成的hash有32位,这里取前面的8位.
+- css 文件指纹的设置,需要修改两个地方:一个是module下面的rules;一个是增加plugins下面的 MiniCssExtractPlugin 插件,设置 MiniCssExtractPlugin 的 filename,使用 *[contenthash]*.这里 MiniCssExtractPlugin 和 style-css 互斥.:
+  ```js
+  module: {
+    rules: [
+      {test: /\.css$/, use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader'
+      ]}
+    ]
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name]_[contenthash:8].css'
+    })
+  ]
+  ```
+- webpack.config.js 文件内容如下:
+  ```js
+  const path = require('path');
+  const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+  module.exports = {
+    entry: {
+      app: './src/app.js'
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: '[name]_[chunkhash].js' // js文件指纹的设置
+    },
+    mode: 'production',
+    module: {
+      rules: [
+        {test: /\.js$/, use: 'babel-loader'},
+        {test: /\.css$/, use: [
+          MiniCssExtractPlugin.loader,  // css文件指纹设置的第一个地方
+          'css-loader'
+        ]},
+        {test: /\.(jpg|jpeg|png|svg|gif)$/, use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name]_[hash:8].[ext]' // 图片文件的指纹设置
+            }
+          }
+        ]}
+      ]
+    },
+    plugins:[
+      // css 文件指纹设置的第二个地方
+      new MiniCssExtractPlugin({
+        filename: '[name]_[contenthash:8].css'
+      })
+    ]
+  }
+  ```
+- 图片[字体]的文件指纹设置:
+  - 设置 *file-loader* 或者 *url-loader* 的 *options* 里面的 name,使用 *[hash]*
+  ```js
+  module: {
+    entry: {
+      ...
+    },
+    output: {
+      ...
+    },
+    module: {
+      rules: [
+        {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: [{
+            loader: 'file-loader',
+            options: {
+              name: 'img/[name][hash:8].[ext]'
+            }
+          }]
+        }
+      ]
+    }
+  }
+  ```
+    |占位符名称|含义|
+    |:-:|:-:|
+    |[ext]|资源后缀名|
+    |[name]|文件名称|
+    |[path]|文件的相对路径|
+    |[folder]|文件所在的文件夹|
+    |[contenthash]|文件的内容hash,默认是md5生成|
+    |[hash]|文件内容的hash,默认是md5生成|
+    |[emoji]|一个随机的指代文件内容的emoji|
+
+###### 2.11.代码压缩
+- js文件的压缩
+  - webpack4 内置了 uglifyjs-webpack-plugin,如果mode是production,默认就会压缩js代码.当然也可以手动安装,然后设置一些额外的参数.
+- css文件的压缩
+  - css-loader1.0时,可以设置minify这个参数进行压缩,但是1.0之后这个参数被取消了.
+  - 使用 optimize-css-assets-webpack-plugin;
+  - 需要同时配合 cssnano 预处理器使用.
+  ```js
+  plugins: [
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano')
+    })
+  ]
+  ```
+- html文件压缩
+  - 使用html-webpack-plugin,设置压缩参数
+  ```js
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/app.html),
+      filename: 'app.html',
+      chunks: ['app'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        nimifyJS: true,
+        removeComments: false
+      }
+    })
+  ]
+  ```
