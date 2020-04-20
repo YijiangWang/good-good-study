@@ -452,3 +452,39 @@ module.exports = {
     |[contenthash]|文件的内容hash,默认是md5生成|
     |[hash]|文件内容的hash,默认是md5生成|
     |[emoji]|一个随机的指代文件内容的emoji|
+
+###### 2.11.代码压缩
+- js文件的压缩
+  - webpack4 内置了 uglifyjs-webpack-plugin,如果mode是production,默认就会压缩js代码.当然也可以手动安装,然后设置一些额外的参数.
+- css文件的压缩
+  - css-loader1.0时,可以设置minify这个参数进行压缩,但是1.0之后这个参数被取消了.
+  - 使用 optimize-css-assets-webpack-plugin;
+  - 需要同时配合 cssnano 预处理器使用.
+  ```js
+  plugins: [
+    new OptimizeCSSAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano')
+    })
+  ]
+  ```
+- html文件压缩
+  - 使用html-webpack-plugin,设置压缩参数
+  ```js
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src/app.html),
+      filename: 'app.html',
+      chunks: ['app'],
+      inject: true,
+      minify: {
+        html5: true,
+        collapseWhitespace: true,
+        preserveLineBreaks: false,
+        minifyCSS: true,
+        nimifyJS: true,
+        removeComments: false
+      }
+    })
+  ]
+  ```
