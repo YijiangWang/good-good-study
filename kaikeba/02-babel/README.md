@@ -5,7 +5,7 @@
 ###### 使用:
 - 通过在目标文件夹下运行`npm init`创建package.json文件夹;
 - 安装babel依赖:`npm i --save-dev @babel/cli @babel/core @babel/preset-env`;
-- 在项目根目录下创建文件夹`.babelrc`或者`babel.config.json`,里面的内容如下:
+- 在项目根目录下创建文件夹`.babelrc`或者`babel.config.json`,`.babelrc`里面的内容如下:
   ```
   {
     "presets": ["@babel/env"] // 预设: 根据环境进行配置
