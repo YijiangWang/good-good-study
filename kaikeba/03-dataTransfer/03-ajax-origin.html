@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+      const $ = document.querySelectorAll.bind(document);
+      
+  </script>
+  <button class="btn">get</button>
+
+  <script>
+    window.onload = function() {
+      const $ = document.querySelectorAll.bind(document);
+
+      const btn = $('.btn')[0];
+      btn.onclick = function() {
+        // XMLHttpRequest，有些人叫做 xhr
+        // 1.创建
+        let xhr = '';
+        if(window.XMLHttpRequest){
+          xhr = new XMLHttpRequest();
+        }else{
+          // 兼容 IE6，笔者公司现在只要求兼容 Chrome 和 Firefox
+          xhr = new ActiveXObject('Microsoft.XMLHttp')  
+        }
+        // 2.连接
+        xhr.open('get','./02-ajax.php?a=11&b=12',true); //第三个参数表示是否异步
+        // 3.发送，可以带参数body，但这里是get请求
+        xhr.send();
+        // 4.接受
+        // 当通信状态发生变化时
+        xhr.onreadystatechange = function() {
+          if(xhr.readyState == 4 && xhr.status == 200){
+            console.log(xhr.responseText);
+          }
+        }
+      }
+
+      const btn2 = $('.btn2')[0];
+      btn2.onclick = function() {
+        // XMLHttpRequest，有些人叫做 xhr
+        // 1.创建
+        let xhr2 = '';
+        if(window.XMLHttpRequest){
+          xhr2 = new XMLHttpRequest();
+        }else{
+          // 兼容 IE6，笔者公司现在只要求兼容 Chrome 和 Firefox
+          xhr2 = new ActiveXObject('Microsoft.XMLHttp')  
+        }
+        // 2.连接
+        xhr2.open('post','./03-ajax-post.php',true); //第三个参数表示是否异步
+        // 2.1.设置请求头
+        xhr2.setRequestHeader('content-type','application/x-www-form-urlencoded')
+        // 3.发送，可以带参数body，但这里是get请求
+        xhr2.send('a=88&b=12');
+        // 4.接受
+        // 当通信状态发生变化时
+        xhr2.onreadystatechange = function() {
+          if(xhr2.readyState == 4 && xhr2.status == 200){
+            console.log(xhr2.responseText);
+          }
+        }
+      }
+    }
+  </script>
+  <button class="btn2">post</button>
+</body>
+</html>
