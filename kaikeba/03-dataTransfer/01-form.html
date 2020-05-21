@@ -6,10 +6,10 @@
   <title>Document</title>
 </head>
 <body>
-  <form action="http://localhost/a.php" method="POST" id="yjwForm">
-    用户名: <input type="text" name='user'><br>
-    密码: <input type="password" name="pass"><br>
-    <input type="submit" value="提交">
+  <form action="./02-ajax.php" method="get" id="yjwForm">
+    用户名: <input type='text' name='a'><br>
+    密码: <input type='test' name='b'><br>
+    <input type='submit' value='提交'>
   </form>
 </body>
 <script>
@@ -18,8 +18,8 @@
     const yjwForm = $('#yjwForm')[0];
     
     // 获取用户名和密码
-    const user = document.getElementsByName('user')[0];
-    const pass = document.getElementsByName('pass')[0];
+    const user = document.getElementsByName('a')[0];
+    const pass = document.getElementsByName('b')[0];
 
     // form表单有一个提交事件,在提交时进行空或者其它校验
     yjwForm.onsubmit = () => {
