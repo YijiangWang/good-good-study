@@ -3,6 +3,8 @@ import ReduxTest from './reduxTest';
 import {Provider} from 'react-redux';
 import store from './store';
 import RouterTest from './routerTest';
+import { CompFunc, CompClass } from './components/CompType';
+import Clock from './components/Clock';
 
 function App() {
   return (
@@ -12,6 +14,16 @@ function App() {
 
         <RouterTest />
       </Provider>
+      <hr/>
+
+
+      <hr/>
+      
+      <Clock />
+      <hr/>
+
+      <CompFunc name='CompF'/>
+      <CompClass name='CompC'/>
     </div>
   );
 }
