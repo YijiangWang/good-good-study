@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .active {
+      background-color: red;
+    }
+  </style>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="root">aa</div>
+  <script>
+    const vm = new Vue({
+      el: '#root',
+      data: () => {  // 都是通过函数返回一个对象
+        return {
+          text: '这里是text',
+          msg: '黄瓜',
+          htmlMsg: '<h2>这里是html</h2>',
+          vIf: true,
+          vShow: true,
+          goods: [
+            {id: 1, name: '鞋子', count: 3},
+            {id: 2, name: '裙子', count: 20},
+            {id: 3, name: '帽子', count: 45},
+            {id: 4, name: 'T恤', count: 99}
+          ]
+        }
+      },
+      template: `
+        <div class='app'>
+          <p>{{text}}</p>
+          <div v-text='msg' @click='htmlClick'></div>
+          <div v-html='htmlMsg' v-on:click='htmlClick'></div>
+          <div v-if='vIf'>这里是v-if属性</div>
+          <div v-if='!vIf'>这里是v-if属性2</div>
+          <div v-show='vShow' v-bind:class='{active:true}'>这里是show属性</div>
+          <div v-show='!vShow' :class='{active:true}'>这里是！show属性</div>
+
+          <ul >
+            <li v-for='(value,index) in goods'>
+              <span v-text='value.id'></span>
+              <span v-text='value.name'></span>
+              <span v-text='value.count'></span>
+            </li>
+          </ul>
+        </div>
+      `,
+      methods: {
+        htmlClick() {
+          console.log(this)
+          this.vIf = !this.vIf;
+          this.vShow = !this.vShow;
+        }
+      },
+      // v-if 和 v-show区别：v-if切换消耗比较大，v-show 初始渲染消耗比较大。如果会频繁切换，就是用 v-show，如果切换频次很少，就是用 v-if。
+      // v-bind 可以绑定标签的所有属性,‘v-bind:’ 可以简写成 ‘：’
+      // ‘v-on:原生事件’ 绑定事件，可以简写成 @
+    })
+
+    console.log('yjw---vm---> ', vm);
+  </script>
+</body>
+</html>  
