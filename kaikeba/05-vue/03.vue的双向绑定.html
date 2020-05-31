@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    new Vue({
+      el: '#root',
+      data() {
+        return {
+          msg: '好好学习',
+          msg2: '世界你好'
+        }
+      },
+      template: `
+        <div>
+          <div v-text='msg'></div>
+          <input v-model='msg' />
+          <hr />
+          <div v-text='msg2'></div>
+          <input :value='msg2' @input='vChange'/>
+        </div>
+      `,
+      methods: {
+        vChange(e) {
+          this.msg2 = e.target.value
+        }
+      },
+      // v-model：双向数据绑定的体现，只会体现再UI控件中，只能应用在有value属性的标签中
+    })
+  </script>
+</body>
+</html>
