@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./node_modules/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+    <h2>{{msg}}</h2>
+    <h2>{{1+1}}</h2>
+    <h2>{{'abc'.split('').reverse().join('')}}</h2>
+    <h2>这里是一个对象{{ {name: 'yijiangwang'} }}</h2>
+  </div>
+  <script>
+    const vm = new Vue({
+      el: '#root',  // 目的地
+      data: {
+        msg: '黄瓜'
+      },
+      //template: '<div>{{msg}}</div>'  // 如果这里的模板有值，优先使用这里的模板，如果没有就使用目的地模板
+    });
+    console.log('yjw---vm---> ', vm)
+  </script>
+</body>
+</html>
