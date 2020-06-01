@@ -52,11 +52,11 @@
           <th>价格</th>
         </tr>
         <tr v-for='(item,index) in courseCart' :key='item.id'>
-          <td></td>
+          <td><input type="checkbox" :value='item.isActive'></td>
           <td >{{item.name}}</td>
           <td v-text='item.price'></td>
-          <td></td>
-          <td></td>
+          <td>{{item.number}}</td>
+          <td>{{item.number * item.price}}</td>
         </tr>
       </table>
     </div>
@@ -73,7 +73,7 @@
           },
           courseList: [
             { id: 1, name: 'web全栈', price: 8888 },
-            { id: 2, name: 'python人工智能', price: 66666 }
+            { id: 2, name: 'python人工智能', price: 6666 }
           ],
           courseCart: []
         }
@@ -84,9 +84,20 @@
           this.courseInfo = {};
         },
         addCourseToCart(index) {
-          console.log(this.courseList[index])
-          this.courseCart.push(this.courseList[index]);
-          console.log('yjw---', this.courseCart)
+          let item = this.courseList[index];
+          console.log('yjw---', item);
+          let course = this.courseCart.find(n=>n.name === item.name)
+          console.log('yjw---course---> ',course)
+          if(course) {
+            course.number = course.number + 1;
+          } else {
+            course = {
+              ...item,
+              number: 1,
+              isActive: true
+            }
+            this.courseCart.push(course);
+          }
         }
       },
     })
