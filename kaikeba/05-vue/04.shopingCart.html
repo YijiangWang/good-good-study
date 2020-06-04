@@ -58,6 +58,11 @@
           <td><span @click='minus(index)'>-</span>&nbsp;{{item.number}}&nbsp;<span @click='add(index)'>+</span></td>
           <td>{{item.number * item.price}}</td>
         </tr>
+        <tr>
+          <td>统计</td>
+          <td colspan="2">{{this.computeCount()}}/{{this.courseCart.length}}</td>
+          <td colspan="2">{{this.couputeTotalPrice()}}</td>
+        </tr>
       </table>
     </div>
   </div>
@@ -75,7 +80,9 @@
             { id: 1, name: 'web全栈', price: 8888 },
             { id: 2, name: 'python人工智能', price: 6666 }
           ],
-          courseCart: []
+          courseCart: [],
+          selectCount: 0,
+          tatalPrice: 0
         }
       },
       methods: {
@@ -111,6 +118,22 @@
         },
         add(index) {
           this.courseCart[index].number += 1;
+        },
+        computeCount(){
+          let n = 0;
+          this.courseCart.forEach(element => {
+            element.isActive && (n+=1)
+          });
+          return n;
+        },
+        couputeTotalPrice(){
+          let price = 0;
+          this.courseCart.forEach(element => {
+            if (element.isActive){
+              price = price + element.price * element.number;
+            }
+          });
+          return price;
         }
       },
     })
