@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // function fn1() {
+    //   console.log(arguments);
+    // }
+    // fn1(1,2,3,4,5);  // [1,2,3,4,5]
+
+    // const fn2 = (a,b,...rest) => {
+    //   console.log(a,b,rest); 
+    // };
+    // fn2(3,4,5,6,7); // 3 4 [5, 6, 7]
+
+    // document.onclick = function() {
+    //   console.log(this);  // #document
+    // }
+    // document.onclick = () => {
+    //   console.log(this);  // Window
+    // }
+
+    // document.onclick = function() {
+    //   function fn1() {
+    //     console.log(this)
+    //   }
+    //   fn1();  // Window
+
+    //   const fn2 = () => {
+    //     console.log(this);
+    //   }
+    //   fn2();  // #document
+    // }
+
+    // let fn1;
+    // function fn2() {
+    //   console.log(this);
+    //   fn1 = () => {
+    //     console.log(this)
+    //   }
+    // }
+    // fn2();  // Window
+    // fn1();  // Window
+
+    // let fn1;
+    // function fn2() {
+    //   console.log(this);
+    //   fn1 = () => {
+    //     console.log(this);
+    //   }
+    // }
+    // fn2 = fn2.bind(document);
+    // fn2();  // #document
+    // fn1();  // #document
+
+    // fn1 = (a=8) => {
+    //   console.log(a)
+    // }
+    // fn1()
+
+    let arr = [[1,2,3],[2,3,[2,3,[4,5]]],[3,4,5]]
+    console.log(arr.flat(Infinity))
+  </script>
+</body>
+</html>
