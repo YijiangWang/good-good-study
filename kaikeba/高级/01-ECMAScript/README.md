@@ -40,8 +40,8 @@
 ```js
   let a = [1, 2];
   let b = [3, 4, 5]
-  let c = [3, 4, ...a, 5];  // [3, 4, 1, 3, 5];
-  let [x, y, ...z] = c; //3 4 [1, 3, 5]
+  let c = [3, 4, ...a, 5];  // [3, 4, 1, 2, 5];
+  let [x, y, ...z] = c; //3 4 [1, 2, 5]
   // 对象也类似
   // 对象的拷贝，修改obj2中的内容，不影响obj1中的内容
   let obj2 = {...obj1};
@@ -170,3 +170,58 @@
   ```
 - fill：arr.fill(value,startIdx,endIdx);
 - includes：arr.includes(value,fromIdx)。
+
+### **字符串**
+- startsWith('aa',position):判断第position开始是否以'aa'开始;
+- endsWith('aa',position):判断前position位是否以'aa'结束;
+- repeat: str.repeat(count),将str重复count次.
+
+### **模板字符串**
+- 比较简单,这里不做过多赘述:`${a}`.
+
+### **对象**
+- 简洁表示法:
+  ```js
+  let a = 1;
+  let b = 2;
+  let obj1 = {
+    a: a,
+    b: b,
+    c: function() {}
+  }
+  // es6表示法
+  let obj2 = {
+    a,
+    b,
+    c() {}
+  }
+  ```
+- 属性名表示法:
+  ```js
+  let name = 'yijiang';
+  let obj = {
+    [name]: 18
+  }
+  //  obj = {yijiang: 18}
+  ```
+- 对象合并:
+  ```js
+  let obj1 = {
+    a: 1,
+    b: 2
+  };
+  let obj2 = {
+    c: 3,
+    d: 4
+  };
+  let obj = Object.assign({}, obj1, obj2);
+  // Object.assign(obj1, obj2); // 把 obj2 合并到 obj1 中
+  // 也可以通过展开运算符
+  ```
+- Object.is(a, b):判断两个值是否相等:
+  - 两个值都是 undefined;
+  - 两个值都是 null;
+  - 两个值都是 true,或者都是 false;
+  - 两个值是由相同个数的字符按照相同的顺序组成的字符串;
+  - 两个值指向同一个对象;
+  - 两个值都是数字,并且都是 +0;都是 -0;都是 NaN.[这里和 === 结果不一样]
