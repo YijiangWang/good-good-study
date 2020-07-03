@@ -8,6 +8,29 @@
 </head>
 
 <body>
+    <div class="age">
+        <button>年龄从小到大</button>
+        <button>年龄从大到小</button>
+        <button>默认</button>
+    </div>
+    <div class="gender">
+        <button>男</button>
+        <button>女</button>
+        <button>默认</button>
+    </div>
+
+    <table class="list">
+        <thead>
+            <tr>
+                <th>号码</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
 </body>
 <script>
@@ -17,74 +40,95 @@
             name: '小明',
             age: 12,
             gender: '男'
-        }, 
+        },
         {
             id: 1,
             name: '小时代峰峻',
             age: 18,
             gender: '男'
-        }, 
+        },
         {
             id: 2,
             name: '小二',
             age: 49,
             gender: '男'
-        }, 
+        },
         {
             id: 3,
             name: '更改',
             age: 11,
             gender: '女'
-        }, 
+        },
         {
             id: 4,
             name: '小明',
             age: 32,
             gender: '男'
-        }, 
+        },
         {
             id: 5,
             name: '小明发的',
             age: 66,
             gender: '女'
-        }, 
+        },
         {
             id: 6,
             name: '小明',
             age: 11,
             gender: '男'
-        }, 
+        },
         {
             id: 7,
             name: '小明更改',
             age: 45,
             gender: '女'
-        }, 
+        },
         {
             id: 8,
             name: '小明就',
             age: 23,
             gender: '女'
-        }, 
+        },
         {
             id: 9,
             name: '小明',
             age: 46,
             gender: '男'
-        }, 
+        },
         {
             id: 10,
             name: '小明发的',
             age: 50,
             gender: '女'
-        }, 
+        },
         {
             id: 11,
             name: '小明爱爱',
             age: 60,
             gender: '男'
-        }, 
-    ]
+        },
+    ];
+    function render(data) {
+        let tableData = '';
+        data.map((value, index) => {
+            tableData += `
+                <tr>
+                    <th>${value.id}</th>
+                    <th>${value.name}</th>
+                    <th>${value.age}</th>
+                    <th>${value.gender}</th>
+                </tr>
+            `
+            document.querySelector('table tbody').innerHTML = tableData;
+        })
+    }
+    render(data)
+    const ageBtns = document.querySelectorAll('.age button');
+    ageBtns.forEach((btn, index) => {
+        btn.onclick = function() {
+            data.sort((v1, v2) => )
+        }
+    })
 </script>
 
 </html>
