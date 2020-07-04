@@ -1,52 +1,132 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
+
 <body>
   <div class="musicList">
     <p class="header">百度音乐榜单</p>
     <div class="list">
-      
     </div>
     <div class="bottom">
-      <input type="checkbox" />
+      <input class="check" type="checkbox" />
       <button class="del">删除</button>
-      <input type="text" class="addData">
+      <input class="text" class="addData">
       <button class="add">添加</button>
     </div>
   </div>
 </body>
 <script>
-  const data = [
+  let data = [
     {
-      select: true,
-      name: 'xiaogang - yueliang',
+      id: 0,
+      title: "残酷月光 - 费启鸣",
+      checked: true,
       collect: true
-    },
-    {
-      select: false,
-      name: 'she - nishitian',
+    }, {
+      id: 1,
+      title: "兄弟 - 艾热",
+      checked: false,
       collect: false
-    },
+    }, {
+      id: 2,
+      title: "毕生 - 夏增祥",
+      checked: false,
+      collect: true
+    }, {
+      id: 3,
+      title: "公子向北去 - 李春花",
+      checked: false,
+      collect: false
+    }, {
+      id: 4,
+      title: "战场 - 沙漠五子",
+      checked: true,
+      collect: false //是否收藏 true 收藏 false 没有收藏
+    }
   ];
 
+  // 判断是否全选
+  const selectAll = () => data.every((music, index) => music.checked === true);
+  // 获取底部所有的 dom
+  const bottomCheckBtn = document.querySelector('.bottom .check');
+  const bottomDelBtn = document.querySelector('.bottom .del');
+  const bottomText = document.querySelector('.bottom .text');
+  const bottomAddBtn = document.querySelector('.bottom .add');
+  bottomCheckBtn.onclick = e => {
+    data.forEach((music, index) => {
+      music.checked = e.target.checked;
+    })
+    render(data);
+  }
+  bottomDelBtn.onclick = () => {
+    const checkList = document.querySelectorAll('.musicList .check');
+    data = data.filter((music, index) => music.checked === false);
+    render(data);
+  }
+  bottomAddBtn.onclick = () => {
+    const text = bottomText.value;
+    data.push({
+      id: data.length,
+      title: text,
+      checked: false,
+      collect: false,
+    })
+    render(data);
+  }
+
+  // 渲染数据
   function render(data) {
     let dataStr = '';
     data.forEach((value, index) => {
       dataStr += `
-        <input type="checkbox" ${value.select && 'checked'}/>
-        <span>${value.name}</span>
-        <button class="collect">${value.collect?'取消收藏':'收藏'}</button>
-        <button class="delete">删除</button><br/>
+        <div class="music">
+          <span>${value.id} </span>
+          <input class="check" type="checkbox" ${value.checked && 'checked'}/>
+          <span class="title">${value.title}</span>
+          <button class="collect">${value.collect ? '取消收藏' : '收藏'}</button>
+          <button class="delete">删除</button>
+        </div>
       `
     });
-
     document.querySelector('.musicList .list').innerHTML = dataStr;
+    bottomCheckBtn.checked = selectAll();
+    addEvent();
   }
   render(data);
+
+  // 添加每一首歌中的相关事件
+  function addEvent() {
+    const musics = document.querySelectorAll('.musicList .list .music');
+    musics.forEach((music, index) => {
+      // 获取每一首歌中的所有按钮
+      const checkBtn = music.querySelector('.check');
+      const collectBtn = music.querySelector('.collect');
+      const delBtn = music.querySelector('.delete');
+
+      checkBtn.onclick = () => {
+        data[index]['checked'] = !data[index]['checked'];
+        render(data);
+      };
+      collectBtn.onclick = () => {
+        data[index]['collect'] = !data[index]['collect'];
+        render(data);
+      };
+      delBtn.onclick = () => {
+        data.splice(index, 1);
+        render(data);
+      }
+    })
+  }
+
+  /* 
+  * addEvent 必须每次 render 之后都要调用，否则每次render之后页面中的dom没有事件
+  */
 </script>
+
 </html>
