@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="age">
+    <button>年龄从小到大</button>
+    <button>年龄从大到小</button>
+    <button style="color: darkturquoise">默认</button>
+  </div>
+  <div class="gender">
+    <button>男</button>
+    <button>女</button>
+    <button style="color: darkturquoise">默认</button>
+  </div>
+
+  <table class="list">
+    <thead>
+      <tr>
+        <th>号码</th>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>性别</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+</body>
+<script>
+  const data = [
+    {
+      id: 0,
+      name: '小明',
+      age: 12,
+      gender: '男'
+    },
+    {
+      id: 1,
+      name: '小时代峰峻',
+      age: 18,
+      gender: '男'
+    },
+    {
+      id: 2,
+      name: '小二',
+      age: 49,
+      gender: '男'
+    },
+    {
+      id: 3,
+      name: '更改',
+      age: 11,
+      gender: '女'
+    },
+    {
+      id: 4,
+      name: '小明',
+      age: 32,
+      gender: '男'
+    },
+    {
+      id: 5,
+      name: '小明发的',
+      age: 66,
+      gender: '女'
+    },
+    {
+      id: 6,
+      name: '小明',
+      age: 11,
+      gender: '男'
+    },
+    {
+      id: 7,
+      name: '小明更改',
+      age: 45,
+      gender: '女'
+    },
+    {
+      id: 8,
+      name: '小明就',
+      age: 23,
+      gender: '女'
+    },
+    {
+      id: 9,
+      name: '小明',
+      age: 46,
+      gender: '男'
+    },
+    {
+      id: 10,
+      name: '小明发的',
+      age: 50,
+      gender: '女'
+    },
+    {
+      id: 11,
+      name: '小明爱爱',
+      age: 60,
+      gender: '男'
+    },
+  ];
+  // 渲染页面
+  function render(data) {
+    let tableData = '';
+    data.map((value, index) => {
+      tableData += `
+                <tr>
+                    <th>${value.id}</th>
+                    <th>${value.name}</th>
+                    <th>${value.age}</th>
+                    <th>${value.gender}</th>
+                </tr>
+            `
+      document.querySelector('table tbody').innerHTML = tableData;
+    })
+  }
+  // 获取所有按钮
+  const ageBtns = document.querySelectorAll('.age button');
+  const genderBtns = document.querySelectorAll('.gender button');
+  // 绑定年龄按钮点击事件
+  let ageType = genderType = 2;
+  ageBtns.forEach((btn, index) => {
+    btn.onclick = () => {
+      ageBtns.forEach(btn => btn.style.color = '')
+      btn.style.color = 'darkturquoise'
+      ageType = index;
+      sortFun(ageType, genderType)
+    }
+  })
+  genderBtns.forEach((btn, index) => {
+    btn.onclick = () => {
+      genderBtns.forEach(btn => btn.style.color = '');
+      btn.style.color = 'darkturquoise';
+      genderType = index;
+      sortFun(ageType, genderType)
+    }
+  })
+
+  // 排序
+  const sortFun = (ageType, genderType) => {
+    // 后续可通过标志位等进行优化
+    let newData = data.slice();
+    newData.sort((v1, v2) => {
+      if(ageType === 0) {
+        return v1.age - v2.age;
+      } else if(ageType === 1) {
+        return v2.age - v1.age;
+      } else {
+        return v1.id - v2.id;
+      }
+    });
+
+    newData = newData.filter(v => {
+      console.log(v.gender)
+      if(genderType === 0) {
+        return v.gender === '男';
+      } else if(genderType === 1) {
+        return v.gender === '女';
+      } else {
+        return true;
+      }
+    })
+    render(newData);
+  }
+  render(data)
+</script>
+
+</html>

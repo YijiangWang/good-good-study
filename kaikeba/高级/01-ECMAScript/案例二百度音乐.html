@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="musicList">
+    <p class="header">百度音乐榜单</p>
+    <div class="list">
+      
+    </div>
+    <div class="bottom">
+      <input type="checkbox" />
+      <button class="del">删除</button>
+      <input type="text" class="addData">
+      <button class="add">添加</button>
+    </div>
+  </div>
+</body>
+<script>
+  const data = [
+    {
+      select: true,
+      name: 'xiaogang - yueliang',
+      collect: true
+    },
+    {
+      select: false,
+      name: 'she - nishitian',
+      collect: false
+    },
+  ];
+
+  function render(data) {
+    let dataStr = '';
+    data.forEach((value, index) => {
+      dataStr += `
+        <input type="checkbox" ${value.select && 'checked'}/>
+        <span>${value.name}</span>
+        <button class="collect">${value.collect?'取消收藏':'收藏'}</button>
+        <button class="delete">删除</button><br/>
+      `
+    });
+
+    document.querySelector('.musicList .list').innerHTML = dataStr;
+  }
+  render(data);
+</script>
+</html>
