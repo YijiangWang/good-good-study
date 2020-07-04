@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="btns">
+    <button style="color: red;">按钮一</button>
+    <button>按钮二</button>
+    <button>按钮三</button>
+  </div>
+  <div class="ps">
+    <p>内容一</p>
+    <p style="display: none;">内容二</p>
+    <p style="display: none;">内容三</p>
+  </div>
+</body>
+<script>
+  const btns = document.querySelectorAll('.btns button');
+  const ps = document.querySelectorAll('.ps p');
+  btns.forEach((btn, index1) => {
+    btn.onclick = () => {
+      ps.forEach((p, index2) => {
+        if(index1 === index2) {
+          p.style.display = 'block'
+          btn.style.color = 'red';
+        } else {
+          p.style.display = 'none';
+          btns[index2].style.color = '';
+        }
+      })
+    }
+  })
+</script>
+</html>
