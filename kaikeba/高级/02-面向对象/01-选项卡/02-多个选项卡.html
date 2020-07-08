@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="btns">
+    <button style="color: red;">按钮一</button>
+    <button>按钮二</button>
+    <button>按钮三</button>
+  </div>
+  <div class="ps">
+    <p>内容一</p>
+    <p style="display: none;">内容二</p>
+    <p style="display: none;">内容三</p>
+  </div>
+
+  <div class="btns2">
+    <button style="color: red;">按钮一</button>
+    <button>按钮二</button>
+    <button>按钮三</button>
+    <button>按钮四</button>
+  </div>
+  <div class="ps2">
+    <p>内容一</p>
+    <p style="display: none;">内容二</p>
+    <p style="display: none;">内容三</p>
+    <p style="display: none;">内容四</p>
+  </div>
+  <button class="nextPage">第一个tab下一页功能</button>
+  <button class="rotation">第二页的轮播功能</button>
+</body>
+<script>
+  // 扩展： 某一个功能
+  //        第一个选项卡有下一页功能
+  //        第二个选项卡有轮播功能
+  const btns = document.querySelectorAll('.btns button');
+  const ps = document.querySelectorAll('.ps p');
+  createTab(btns, ps, true);
+
+  const btns2 = document.querySelectorAll('.btns2 button');
+  const ps2 = document.querySelectorAll('.ps2 p');
+  const rotationBtn = document.querySelector('.rotation');
+  createTab(btns2, ps2, false, true);
+
+  function createTab(btns, ps, nextPage=false, rotation=false) {
+    btns.forEach((btn, index1) => {
+      btn.onclick = () => {
+        psFor(ps, index1)
+      }
+    })
+
+    if (nextPage) {
+      const nextP = document.querySelector('.nextPage');
+      let num = 0;
+      nextP.onclick = () => {
+        num = ++num > btns.length - 1 ? 0 : num;
+        psFor(ps, num);
+      }
+    }
+
+    if (rotation) {
+      rotationBtn.onclick = () => {
+        let num = 0;
+        setInterval(() => {
+          num = ++num > btns.length - 1 ? 0 : num;
+          psFor(ps, num);
+        }, 2000);
+      }
+    }
+
+    function psFor(ps, num) {
+      ps.forEach((p, idx) => {
+        if (idx === num) {
+          ps[idx].style.display = 'block';
+          btns[idx].style.color = 'red';
+        } else {
+          ps[idx].style.display = 'none';
+          btns[idx].style.color = '';
+        }
+      })
+    }
+  }
+</script>
+
+</html>
