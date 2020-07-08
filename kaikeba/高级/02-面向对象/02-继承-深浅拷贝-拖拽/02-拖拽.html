@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .wrap{
+      position: relative;
+      margin-top: 20px;
+      margin-left: 100px;
+      border: 1px solid #000;
+    }
+    .red{
+      position: absolute;
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      margin-left: 20px;
+    }
+    .blue{
+      position: absolute;
+      background-color: blue;
+      width: 100px;
+      height: 100px;
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="red"></div>
+    <div class="blue"></div>
+  </div>
+</body>
+<script>
+  const redBox = document.querySelector('.red');
+  const blueBox = document.querySelector('.blue');
+
+  // 面向对象
+  function Drag(ele) {
+    this.ele = ele
+  }
+  // 鼠标按下
+  Drag.prototype.downFun = function() {
+    this.ele.onmousedown = e => {
+      const x0 = e.clientX;
+      const offsetLeft = this.ele.offsetLeft;
+      this.moveFun(x0, offsetLeft);
+      this.upFun();
+    }
+  }
+  // 鼠标拖拽
+  Drag.prototype.moveFun = function(x0, offsetLeft) {
+    this.ele.onmousemove = e => {
+      this.ele.style.marginLeft = e.clientX - x0 + offsetLeft + 'px';
+    }
+  }
+  // 鼠标抬起
+  Drag.prototype.upFun = function() {
+    this.ele.onmouseup = () => {
+      this.ele.onmousemove = null;
+    }
+  }
+  const drag = new Drag(blueBox);
+  drag.downFun()
+
+  // 面向过程
+  // redBox.onmousedown = e => {
+  //   const x0 = e.clientX;
+  //   const offsetLeft = redBox.offsetLeft;
+
+  //   redBox.onmousemove = e => {
+  //     console.log(e.clientX);
+  //     redBox.style.marginLeft = e.clientX - x0 + offsetLeft + 'px';
+  //   }
+  //   redBox.onmouseup = () => {
+  //     redBox.onmousemove = null;
+  //   }
+  // }
+</script>
+</html>
