@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="btns">
+    <button style="color: red;">按钮一</button>
+    <button>按钮二</button>
+    <button>按钮三</button>
+  </div>
+  <div class="ps">
+    <p>内容一</p>
+    <p style="display: none;">内容二</p>
+    <p style="display: none;">内容三</p>
+  </div>
+
+  <div class="btns2">
+    <button style="color: red;">按钮一</button>
+    <button>按钮二</button>
+    <button>按钮三</button>
+    <button>按钮四</button>
+  </div>
+  <div class="ps2">
+    <p>内容一</p>
+    <p style="display: none;">内容二</p>
+    <p style="display: none;">内容三</p>
+    <p style="display: none;">内容四</p>
+  </div>
+  <button class="nextPage">第一个tab下一页功能</button>
+  <button class="rotation">第二页的轮播功能</button>
+</body>
+<script>
+  function CreateTab(btns, ps) {
+    this.btns = btns;
+    this.ps = ps;
+    this.btnFor();
+  }
+
+  CreateTab.prototype.psFor = function (num) {
+    this.ps.forEach((p, idx) => {
+      if (idx === num) {
+        this.ps[idx].style.display = 'block';
+        this.btns[idx].style.color = 'red';
+      } else {
+        this.ps[idx].style.display = 'none';
+        this.btns[idx].style.color = '';
+      }
+    })
+  }
+  CreateTab.prototype.btnFor = function () {
+    this.btns.forEach((btn, index1) => {
+      btn.onclick = () => {
+        this.psFor(index1)
+      }
+    })
+  }
+
+  const btns = document.querySelectorAll('.btns button');
+  const ps = document.querySelectorAll('.ps p');
+  const tab1 = new CreateTab(btns, ps);
+  let num = 0;
+  document.querySelector('.nextPage').onclick = function () {
+    num = ++num > ps.length - 1 ? 0 : num;
+    tab1.psFor(num)
+    // psFor(ps, num);
+  }
+
+  const btns2 = document.querySelectorAll('.btns2 button');
+  const ps2 = document.querySelectorAll('.ps2 p');
+  const rotationBtn = document.querySelector('.rotation');
+  const tab2 = new CreateTab(btns2, ps2);
+  let num2 = 0;
+  rotationBtn.onclick = function () {
+    setInterval(() => {
+      num2 = ++num2 > ps.length - 1 ? 0 : num2;
+      tab2.psFor(num2);
+    }, 1000);
+  }
+</script>
+
+</html>
