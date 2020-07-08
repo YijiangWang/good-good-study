@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+
+</body>
+<script>
+  function Tab() {
+    const obj = {};
+    obj.name = 'yijiang';
+    obj.age = 28;
+    obj.psFor = function() {
+      console.log('yijiang...');
+    };
+    return obj  
+  }
+
+  const tab1 = Tab();
+  const tab2 = Tab();
+  // 缺点一：对象识别问题
+  console.log(tab1 instanceof Tab);   // false
+
+  // 缺点二：性能问题，每次新建一个对象，都会重复里面的方法
+  console.log(tab1.psFor === tab2.psFor); // false
+</script>
+</html>
