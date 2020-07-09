@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  function Person(height=178) {
+    this.name = '张三';
+    this.age = 18;
+    this.height = height;
+    this.study = () => {
+      console.log('好好学习');
+    }
+  }
+
+  function Student(height=0){
+    Person.call(this, height);
+  }
+
+  const stu = new Student(180);
+  console.log(stu.height);
+  console.log(stu.name);
+  stu.study();
+</script>
+</html>
