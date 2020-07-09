@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .wrap{
+      position: relative;
+      margin-top: 20px;
+      margin-left: 100px;
+      border: 1px solid #000;
+    }
+    .red{
+      position: absolute;
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      left: 20px;
+    }
+    .blue{
+      position: absolute;
+      background-color: blue;
+      width: 100px;
+      height: 100px;
+      top: 120px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="red"></div>
+    <div class="blue"></div>
+  </div>
+</body>
+<script>
+  const redBox = document.querySelector('.red');
+  const blueBox = document.querySelector('.blue');
+
+  // 面向对象
+  function Drag(ele) {
+    this.ele = ele
+  }
+  // 鼠标按下
+  Drag.prototype.downFun = function() {
+    this.ele.onmousedown = e => {
+      const x0 = e.clientX;
+      const y0 = e.clientY;
+      const offsetLeft = this.ele.offsetLeft;
+      const offsetTop = this.ele.offsetTop;
+      this.moveFun(x0, offsetLeft, y0, offsetTop);
+      this.upFun();
+    }
+  }
+  // 鼠标拖拽
+  Drag.prototype.moveFun = function(x0, offsetLeft, y0, offsetTop) {
+    this.ele.onmousemove = e => {
+      this.ele.style.left = Math.max(e.clientX - x0 + offsetLeft, 0) + 'px';
+      this.ele.style.top = Math.max(e.clientY - y0 + offsetTop, 0) + 'px';
+    }
+  }
+  // 鼠标抬起
+  Drag.prototype.upFun = function() {
+    this.ele.onmouseup = () => {
+      this.ele.onmousemove = null;
+    }
+    this.ele.onmouseout = () => {
+      this.ele.onmousemove = null;
+    }
+  }
+  const drag = new Drag(blueBox);
+  drag.downFun();
+
+  const drag1 = new Drag(redBox);
+  drag1.downFun();
+
+  // 面向过程
+  // redBox.onmousedown = e => {
+  //   const x0 = e.clientX;
+  //   const offsetLeft = redBox.offsetLeft;
+
+  //   redBox.onmousemove = e => {
+  //     console.log(e.clientX);
+  //     redBox.style.marginLeft = e.clientX - x0 + offsetLeft + 'px';
+  //   }
+  //   redBox.onmouseup = () => {
+  //     redBox.onmousemove = null;
+  //   }
+  // }
+</script>
+</html>
