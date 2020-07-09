@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  function Person(height) {
+    this.name = '张三';
+    this.height = height;
+  }
+  Person.prototype.hobby = () => {
+    console.log('打篮球');
+  }
+
+  function Student(height=0) {
+    // 三种方法继承
+    Person.call(this, height);
+    // Person.apply(this, [height]);
+    // Person.bind(this)(height);
+  }
+
+  const Link = function() {};
+  Link.prototype = Person.prototype;
+
+  Student.prototype = new Link(); // 注:替换原型后需要执行constructor
+  Student.prototype.constructor = Student;
+  Student.prototype.hobby = function() {
+    console.log('王者荣耀');
+  }
+  
+  const stu = new Student(168);
+  console.log(stu.height);  // 168
+  stu.hobby();  // 王者荣耀   深拷贝
+
+  const per = new Person(188);
+  console.log(per.height);  // 188
+  per.hobby() // 打篮球
+ 
+</script>
+</html>
