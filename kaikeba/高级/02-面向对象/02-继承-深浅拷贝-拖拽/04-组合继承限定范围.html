@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .wrap {
+      position: relative;
+      margin-top: 20px;
+      margin-left: 100px;
+      border: 1px solid #000;
+    }
+
+    .red {
+      position: absolute;
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      left: 20px;
+    }
+
+    .blue {
+      position: absolute;
+      background-color: blue;
+      width: 100px;
+      height: 100px;
+      top: 120px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="red"></div>
+    <div class="blue"></div>
+  </div>
+</body>
+<script>
+  function Drag(ele) {
+    this.ele = ele;
+  }
+  Drag.prototype.downFun = function () {
+    this.ele.onmousedown = e => {
+      const x0 = this.ele.offsetLeft;
+      const y0 = this.ele.offsetTop;
+      const xx = e.clientX;
+      const yy = e.clientY;
+
+      this.moveFun(xx-x0, yy-y0);
+      this.upFun()
+    }
+  }
+  Drag.prototype.moveFun = function (x, y) {
+    this.ele.onmousemove = e => {
+      this.setStyle(e.clientX - x, e.clientY - y);
+    }
+  }
+  Drag.prototype.setStyle = function(x, y) {
+    this.ele.style.left = x + 'px';
+    this.ele.style.top = y + 'px';
+  }
+  Drag.prototype.upFun = function () {
+    this.ele.onmouseup = () => {
+      this.ele.onmousemove = null;
+    }
+  }
+
+  const redBox = document.querySelector('.red');
+  const blueBox = document.querySelector('.blue');
+  const redDrag = new Drag(redBox);
+  redDrag.downFun();
+
+  const Link = function() {};
+  Link.prototype = Drag.prototype;
+
+  function LimitDrag(ele) {
+    Drag.call(this, ele);
+  }
+  LimitDrag.prototype = new Link();
+  LimitDrag.prototype.constructor = LimitDrag;
+  LimitDrag.prototype.setStyle = function(x, y) {
+    this.ele.style.left = x<0?0:x + 'px';
+    this.ele.style.top = y<0?0:y + 'px';
+  }
+  const blueDrag = new LimitDrag(blueBox);
+  blueDrag.downFun();
+</script>
+
+</html>
