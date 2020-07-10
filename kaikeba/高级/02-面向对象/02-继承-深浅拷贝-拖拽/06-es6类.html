@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  class Person{
+    static test() {
+      console.log('test...');
+    }
+    constructor() {
+      this.name = 'yijiang';
+    }
+    study() {
+      console.log('好好学习...');
+    }
+  }
+  Person.name = 'person';
+
+  const per = new Person();
+  console.log(Person.name); // Person
+  console.log(per.name);  // yijiang
+  console.log(typeof Person); // function
+  console.log(typeof per);   // object
+  Person.test();  // test...
+  per.study();  // 好好学习...
+  console.log(per);
+</script>
+</html>
