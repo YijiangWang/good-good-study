@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+<script>
+  class Person{
+    static test() {
+      console.log('test...');
+    }
+    constructor(height) {
+      this.height = height
+    };
+    hobby() {
+      console.log('高尔夫...')
+    }
+  }
+
+  class Student extends Person{
+    static test() {
+      console.log('Stu test...');
+    }
+    constructor(height){
+      super(height);
+    }
+    hobby() {
+      super.hobby();
+      console.log('考上清华...');
+    }
+  }
+
+  const stu = new Student(178);
+  console.log(stu.height);  // 178
+  Student.test(); // Stu test...
+  stu.hobby();  // 先调用父类的 hobby() "高尔夫...",再调用自己的 hobby() "考上清华..."
+</script>
+</html>
