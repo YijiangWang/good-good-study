@@ -28,7 +28,7 @@
   const Link = function() {};
   Link.prototype = Person.prototype;
 
-  Student.prototype = new Link(); // 注:替换原型后需要执行constructor
+  Student.prototype = new Link(); //这里切断了浅拷贝 注:替换原型后需要执行constructor
   Student.prototype.constructor = Student;
   Student.prototype.hobby = function() {
     console.log('王者荣耀');
