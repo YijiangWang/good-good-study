@@ -19,14 +19,15 @@
   }
 
   function Student(height=0) {
-    // 三种方法继承
-    Person.call(this, height);
+    // 三种方法继承,不会继承原型上的方法
+    Person.call(this, height); 
     // Person.apply(this, [height]);
     // Person.bind(this)(height);
   }
 
   // 方法一、继承原型上的方法
   Student.prototype = Person.prototype; // 浅拷贝
+  Student.prototype.constructor = Student;
   Student.prototype.hobby = () => {
     console.log('我喜欢踢足球');
   }
@@ -35,7 +36,7 @@
   // stu.__proto__ = Person.prototype;
   console.log(stu.height);  // 180
   console.log(stu.name);  // 张三
-  stu.hobby();  // 必须要使 stu.__proto__ = Person.prototype; 或者 Student.prototype = Person.prototype; 否则找不到hobby方法，发现原型上的方法没有继承过来
+  stu.hobby();  // 我喜欢踢足球 必须要使用 stu.__proto__ = Person.prototype; 或者 Student.prototype = Person.prototype; 否则找不到hobby方法，发现原型上的方法没有继承过来
   const person = new Person();
   person.hobby();   // 我喜欢踢足球
 </script>
