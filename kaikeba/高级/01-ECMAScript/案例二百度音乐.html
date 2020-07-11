@@ -65,7 +65,6 @@
     render(data);
   }
   bottomDelBtn.onclick = () => {
-    const checkList = document.querySelectorAll('.musicList .check');
     data = data.filter((music, index) => music.checked === false);
     render(data);
   }

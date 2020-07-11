@@ -3,11 +3,19 @@
 - var：
   - 可以重复声明；
   - 作用域：全局作用域和函数作用域；
-  - 会进行与解析；
+  - 会进行预解析；
 - let、const：
   - 同一作用域下不能重复定义；
-  - 作用域：全局作用域和块级作用域{}。
-  - 不会进行与解析
+  - 作用域：全局作用域和块级作用域{};
+  - 不会进行预解析.
+  ```js
+  if(true) {
+    var a = 'aaa';
+    let b = 'bbbb';
+  }
+  console.log(a); // aaa
+  console.log(b); // ReferenceError: b is not defined
+  ```
 
 ### **作用域**
 - 页面中有三个 li 
@@ -56,7 +64,7 @@
   let arr = [2,3,4,5,5];
   // 构造函数：用来构建某一类型的对象--对象的实例化
   let s = new Set(arr) // 接受一个数组或者类数组作为参数
-  console.log(s, s.size);
+  console.log(s, s.size); // Set(4) { 2, 3, 4, 5 } 4
 
   // console.log(s.clear());  // undefined
   // console.log(s.delete(2)); // true
@@ -79,7 +87,7 @@
   ];
 
   let m = new Map(arr);
-  console.log(m, m.size);
+  console.log(m, m.size); // Map(4) { 'a' => 1, 'b' => 2, 'c' => 3, 'd' => 4 } 4
 
   // console.log(m.clear());  // undefined
   // console.log(m.delete('a')); // true
@@ -87,11 +95,11 @@
   // console.log(m.get('a'));  // 1
   console.log(m.set('f', 8));  // 返回一个新的 Map，可以进行链式调用
 
-  console.log(m, m.size);
+  console.log(m, m.size); // Map(5) { 'a' => 1, 'b' => 2, 'c' => 3, 'd' => 4, 'f' => 8 } 5
   ```
 
 ### **箭头函数**
-- 注:箭头函数中的 this 会穿透,如果包含在多个嵌套的箭头函数中,会一直穿透
+- 注:箭头函数中的 this 会穿透,如果包含在多个嵌套的箭头函数中,会一直穿透;
 -  箭头函数没有不定参数（arguments）
   ```js
   function fn1() {
@@ -135,6 +143,9 @@
     fn1 = () => {
       console.log(this)
     }
+    // fn1 = function() {
+    //   console.log(this) //Window
+    // }
   }
   fn2();  // Window
   fn1();  // Window
@@ -146,6 +157,9 @@
     fn1 = () => {
       console.log(this);
     }
+    // f1 = function() {
+    //   console.log(this);  //Window
+    // }
   }
   fn2 = fn2.bind(document);
   fn2();  // #document
@@ -166,7 +180,7 @@
 - arr.find(callback)：返回满足条件的第一个值，如果没有满足条件的就返回undefined。
 - flat：数组扁平化处理:
   ```js
-  let arr = [[1,2,3],[2,3,[2,3,[4,5]]],[3,4,5]]
+  let arr = [[1,2,3],[2,3,[2,3,[4,5]]],[3,4,5]];  // // [1, 2, 3, 2, 3, 2, 3, 4, 5, 3, 4, 5]
   console.log(arr.flat(Infinity))
   ```
 - fill：arr.fill(value,startIdx,endIdx);
@@ -216,10 +230,45 @@
     d: 4
   };
   let obj = Object.assign({}, obj1, obj2);
-  // Object.assign(obj1, obj2); // 把 obj2 合并到 obj1 中
-  // 也可以通过展开运算符
+  // Object.assign(obj1, obj2); // 把 后面的 obj2 合并到第一个 obj1 中
   ```
-- Object.is(a, b):判断两个值是否相等:
+  ```js
+  let obj1 = {
+    a: 2,
+    b: 3,
+    c: {d: 4}
+  };
+  let obj2 = {
+    x: 5,
+    y: 6,
+    z: {m: 8}
+  };
+  let object = Object.assign(obj1, obj2);
+  // console.log(object);
+  // {
+  //   a: 2
+  //   b: 3
+  //   c: {d: 4}
+  //   x: 5
+  //   y: 6
+  //   z: {m: 8}
+  // }
+
+  obj2.x = 88;
+  obj1.z.m = 100;
+  console.log(object);
+  // {
+  //   a: 2
+  //   b: 3
+  //   c: {d: 4}
+  //   x: 5
+  //   y: 6
+  //   z: {m: 100}
+  // }
+  // assign 第一层是深拷贝,第二层是浅拷贝
+  // 合并也可以通过展开运算符
+  ```
+- Object.is(a, b):判断两个值是否相等,以下的值都为true:
   - 两个值都是 undefined;
   - 两个值都是 null;
   - 两个值都是 true,或者都是 false;
