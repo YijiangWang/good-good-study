@@ -41,6 +41,9 @@
     // let fn1;
     // function fn2() {
     //   console.log(this);
+    //   // fn1 = function() {
+    //   //   console.log(this) //Window
+    //   // }
     //   fn1 = () => {
     //     console.log(this)
     //   }
@@ -48,16 +51,19 @@
     // fn2();  // Window
     // fn1();  // Window
 
-    // let fn1;
-    // function fn2() {
-    //   console.log(this);
-    //   fn1 = () => {
-    //     console.log(this);
-    //   }
-    // }
-    // fn2 = fn2.bind(document);
-    // fn2();  // #document
-    // fn1();  // #document
+    let fn1;
+    function fn2() {
+      console.log(this);
+      fn1 = () => {
+        console.log(this);
+      }
+      // f1 = function() {
+      //   console.log(this);  //Window
+      // }
+    }
+    fn2 = fn2.bind(document);
+    fn2();  // #document
+    fn1();  // #document
 
     // fn1 = (a=8) => {
     //   console.log(a)
@@ -65,7 +71,58 @@
     // fn1()
 
     let arr = [[1,2,3],[2,3,[2,3,[4,5]]],[3,4,5]]
-    console.log(arr.flat(Infinity))
+    console.log(arr.flat(Infinity));  // [1, 2, 3, 2, 3, 2, 3, 4, 5, 3, 4, 5]
+
+    let obj1 = {
+      a: 2,
+      b: 3,
+      c: {d: 4}
+    };
+    let obj2 = {
+      x: 5,
+      y: 6,
+      z: {m: 8}
+    };
+    let object = Object.assign(obj1, obj2);
+    // console.log(object);
+    // {
+    //   a: 2
+    //   b: 3
+    //   c: {d: 4}
+    //   x: 5
+    //   y: 6
+    //   z: {m: 8}
+    // }
+
+    obj2.x = 88;
+    obj1.z.m = 100;
+    // console.log(object);
+    // {
+    //   a: 2
+    //   b: 3
+    //   c: {d: 4}
+    //   x: 5
+    //   y: 6
+    //   z: {m: 100}
+    // }
+
+    const ooo = {...obj2};
+    ooo.x = 10000
+    console.log(ooo);
+    // {
+    //   x: 10000
+    //   y: 6
+    //   z: {m: 100}
+    // }
+    console.log(obj2);
+    // {
+    //   x: 88
+    //   y: 6
+    //   z: {m: 100}
+    // }
+
+    const objj = obj1;
+    console.log(Object.is(NaN, NaN));
   </script>
 </body>
 </html>
