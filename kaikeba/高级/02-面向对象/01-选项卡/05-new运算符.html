@@ -38,13 +38,13 @@
     }
   }
   let t1 = new Tab();
-  console.log(t1.name);
-  t1.hobby();
+  console.log(t1.name); // yijiang
+  t1.hobby(); // hobby... yijiang
   console.log(t1.constructor === Tab);  // true
   console.log(t1.__proto__ === Tab.prototype);  // true
 
   let t2 = new Tab()
-  console.log(t1.psFor === t2.psFor); // true
+  console.log(t1.hobby === t2.hobby); // true
 
   //仿写new 运算符；
   function myNew(constructor, ...arg){
@@ -53,8 +53,8 @@
     obj.__proto__ = constructor.prototype;  // 将构造函数的原型赋值给 obj.__proto__，这样就可以取到构造函数中的方法
     return obj;
   }
-  let myN = myNew(Tab)
-  console.log(myN.name)
-  myN.psFor()
+  let myN = myNew(Tab);
+  console.log(myN.name);  // yijiang
+  myN.psFor();  // psFor...
 </script>
 </html>
