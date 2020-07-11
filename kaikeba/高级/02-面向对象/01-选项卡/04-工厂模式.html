@@ -26,6 +26,6 @@
   console.log(tab1 instanceof Tab);   // false
 
   // 缺点二：性能问题，每次新建一个对象，都会重复里面的方法
-  console.log(tab1 === tab2); // false
+  console.log(tab1.psFor === tab2.psFor); // false
 </script>
 </html>
