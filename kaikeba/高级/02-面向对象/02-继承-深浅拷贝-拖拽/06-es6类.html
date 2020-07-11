@@ -14,21 +14,22 @@
       console.log('test...');
     }
     constructor() {
-      this.name = 'yijiang';
+      this.age = 18;
     }
     study() {
       console.log('好好学习...');
     }
   }
-  Person.name = 'person';
+  Person.age = 20; // 这里相当于添加了静态属性
 
   const per = new Person();
-  console.log(Person.name); // Person
-  console.log(per.name);  // yijiang
+  console.log(Person.age); // 20
+  console.log(per.age);  // 18
   console.log(typeof Person); // function
   console.log(typeof per);   // object
+  console.log(per.constructor); // class Person{...}
   Person.test();  // test...
   per.study();  // 好好学习...
-  console.log(per);
+  console.log(per); // 注释:study 方法放在 __proto__ 里面
 </script>
 </html>
