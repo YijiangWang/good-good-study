@@ -49,7 +49,9 @@
     return newObj;
   }
 
-  console.log(deepCopy(obj));
+  const newObj = deepCopy(obj);
   deepCopy(obj).hobby();  // hobby...
+  obj.a = 'wang';
+  console.log(newObj.a);  // 1
 </script>
 </html>
