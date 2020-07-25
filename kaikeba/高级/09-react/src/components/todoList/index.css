@@ -1,0 +1,69 @@
+.todolist{
+  width: 480px;
+  padding: 20px;
+  background-color: #ffffff;
+  margin: 40px auto;
+  box-shadow: 0 5px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+.todolist h2{
+  text-align: center;
+  font-weight: 600;
+  font-size: 36px;
+  padding: 20px 0;
+}
+
+.create-todo{
+  width: 466px;
+  font-size: 24px;
+  line-height: 1.4em;
+  padding: 6px;
+  outline: none;
+  border: 1px solid #999;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
+}
+.create-todo::-webkit-input-placeholder{
+  font-style: italic;
+}
+
+.todos{
+  margin: 20px 0;
+}
+.yjwtodo{
+  padding: 10px;
+  border-bottom: 1px solid #999;
+}
+.yjwtodo input{
+  float: left;
+  margin: 6px 10px 0 7px;
+}
+.yjwtodo .text{
+  font-size: 24px;
+}
+.yjwtodo .yjwdestroy{
+  float: right;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  margin-top: -20px;
+  background-image: url(./img/destroy.png);
+  display: none;
+}
+.yjwtodo:hover .yjwdestroy{
+  display: block;
+}
+.yjwdestroy:hover{
+  background-position: 0 -20px;
+}
+.doneStyle{
+  text-decoration: line-through;
+}
+
+.yjwstate{
+  margin: 10px;
+}
+.yjwstate .yjwhasdone{
+  float: right;
+  text-decoration: underline;
+  cursor: pointer;
+}
