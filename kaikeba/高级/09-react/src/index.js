@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Lists from './components/Lists';
-import App from './components/todos/App';
 import ToDoList from './components/todoList';
+import Happ from './hook/app';
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <Lists /> */}
-    <App />
-    <ToDoList />
+    {/* <App /> */}
+    {/* <ToDoList /> */}
+    <Happ />
   </React.StrictMode>,
   document.getElementById('root')
 );
