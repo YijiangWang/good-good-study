@@ -1,0 +1,76 @@
+// 第1题：输入两个非零自然数，计算并分别输出它们的最大公约数和最小公倍数   
+const  maxDivisor = (num1, num2) => {
+  let minNum = Math.min(num1, num2);
+  if(num1 % minNum === 0 && num2 % minNum === 0) return minNum;
+
+  for(let i=minNum; i>0; i--){
+    if(num1 % i === 0 && num2 % i === 0) return i;
+  }
+}
+
+const minMultiple = (num1, num2) => {
+  let maxNum = Math.min(num1, num2);
+  for(let i=maxNum; ; i++){
+    if(i % num1 === 0 && i % num2 === 0) return i;
+  }
+}
+
+let a = minMultiple(8,4);
+let b = minMultiple(5,4);
+let c = minMultiple(22,77);
+let d = minMultiple(100,25);
+console.log(a)
+
+// 第2题：一百匹马将二百块砖驮上山，其中大马每匹驮三块、中马每匹驮两块，而小马两匹驮一块，计算并输出各种马匹数目（非负的整数）。
+const ma = () => {
+  for(let large=0; large<=200/3; large++){
+    for(let mid=0; mid <= 200/2; mid++){
+      const small = 100 - large - mid;
+      if(3 * large + 2 * mid + 1/2 * small === 200){
+        console.log(large, mid, small);
+      }
+    }
+  }
+}
+// ma();
+
+// 第3题：将一字符串输入到数组（长度不超过80）后将其输出，将其中的英文字母大小写互换后再将整个字符串输出。
+const handleStr = (str, len=80) => {
+  if(str.length > len) return console.log('输入的字符串长度超出范围，程序结束');
+  let b = ''
+  for(let i=0; i < str.length; i++){
+    const curChar = str[i];
+    if(curChar >= 'a' && curChar <= 'z') {
+      b += curChar.toUpperCase();
+    } else if(curChar >= 'A' && curChar <= 'Z') {
+      b += curChar.toLowerCase();
+    } else {
+      b += curChar;
+    }
+  }
+  console.log(b);
+}
+
+// handleStr('abcdefgabcdefgabcdefg123780AbCefgabcdefgabcdefgabcdefgabcdefgabcdefgabcdefg')
+
+// 第4题：按下列形式使用循环生成一个十阶的矩阵A（下三角）到二维数组中，再输出。
+const twoDimensionalArray = () => {
+  let arr = [];
+  for(let i=0; i<10; i++){
+    let innerArr = [];
+    for(let j=0; j<10; j++){
+      if(j<=i) {
+        innerArr.push(j + 1);
+      } else {
+        innerArr.push(0);
+      }
+    }
+    arr.push(innerArr);
+  }
+
+  for(let i=0; i<10; i++){
+    console.log(...arr[i]);
+  }
+}
+
+// twoDimensionalArray()

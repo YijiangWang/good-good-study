@@ -1,6 +1,6 @@
 #### router 的基本使用
 ```js
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter, HashRouter, Link, Route, Switch} from 'react-router-dom';
 
 import Home from './home';
@@ -13,6 +13,7 @@ function App() {
   /**
    * HashRouter 比 BrowserRouter 路径中多一个 #，使用 BrowserRouter 时上线需要后台进行配置
    */
+  const [count, setCount] = useState(5);
   return (<div>
     <HashRouter>
       <div className="nav">
@@ -35,7 +36,12 @@ function App() {
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path='/about' component={About} />
-          <Route path='/join'exact component={Join} />
+          {/* 
+            route 的 render 属性：
+              1、如果我们想给路由里的组件进行传参那就需要调用组件的 render 方法；
+              2、render 方法接收的参数是一个函数，在函数里必须有一个返回值，返回值是我们要渲染的对应组件
+          */}
+          <Route path='/join'exact render={(props) => <Join {...props} count={count}/>} />
           <Route path='/join/detail' component={JoinDetail} />
           <Route component={Find404}/>
         </Switch>
@@ -44,5 +50,5 @@ function App() {
   </div>)
 }
 
-export default App;
+export default App; 
 ```
